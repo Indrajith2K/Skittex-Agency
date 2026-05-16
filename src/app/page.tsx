@@ -66,7 +66,6 @@ export default function Dashboard() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button onClick={() => setShowReport(true)} className="btn btn-ghost">Download Report</button>
-          <button className="btn btn-primary">New Project</button>
         </div>
       </div>
 
