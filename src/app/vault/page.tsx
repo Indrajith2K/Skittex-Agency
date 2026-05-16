@@ -73,20 +73,29 @@ export default function VaultPage() {
     return path;
   }, [items, currentFolderId]);
 
-  const handleUpload = (e: any) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const newItem: VaultItem = {
+  const processFiles = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    
+    const newItems: VaultItem[] = Array.from(files).map(file => ({
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
       type: file.type.includes('image') ? 'image' : file.type.includes('pdf') ? 'pdf' : 'document',
       size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
       parentId: currentFolderId
-    };
-    setItems([newItem, ...items]);
+    }));
+    
+    setItems(prev => [...newItems, ...prev]);
     setIsUploadModalOpen(false);
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    processFiles(e.target.files);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    processFiles(e.dataTransfer.files);
   };
 
   return (
@@ -95,8 +104,9 @@ export default function VaultPage() {
       <input 
         type="file" 
         id="fileInput" 
+        multiple
         style={{ display: 'none' }} 
-        onChange={handleUpload}
+        onChange={handleFileSelect}
       />
       <div className="page-header">
         <div>
@@ -282,7 +292,22 @@ export default function VaultPage() {
             <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>Upload Document</h2>
             <p style={{ fontSize: '13px', color: '#8b8ba7', marginBottom: '24px' }}>File will be saved to: <span style={{ color: '#818cf8', fontWeight: 600 }}>{breadcrumbs.length > 0 ? breadcrumbs[breadcrumbs.length-1].name : 'Vault Root'}</span></p>
             
-            <div style={{ border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '16px', padding: '40px', textAlign: 'center', marginBottom: '24px' }}>
+            <div 
+              onDragOver={e => e.preventDefault()}
+              onDrop={handleDrop}
+              style={{ 
+                border: '2px dashed rgba(255,255,255,0.1)', 
+                borderRadius: '16px', 
+                padding: '40px', 
+                textAlign: 'center', 
+                marginBottom: '24px',
+                transition: 'all 0.2s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.borderColor = 'rgba(99,102,241,0.5)'}
+              onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
+              onClick={() => document.getElementById('fileInput')?.click()}
+            >
               <Download style={{ width: '40px', height: '40px', color: '#6366f1', opacity: 0.5, marginBottom: '16px' }} />
               <p style={{ fontSize: '14px', color: '#fff', fontWeight: 600, marginBottom: '4px' }}>Drag & drop files here</p>
               <p style={{ fontSize: '12px', color: '#5a5a78' }}>Support PDF, PNG, JPG, ZIP (Max 50MB)</p>
