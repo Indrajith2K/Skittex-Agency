@@ -31,6 +31,9 @@ interface AppState {
   addInvoice: (invoice: any) => void;
   updateInvoice: (id: string, invoice: any) => void;
   deleteInvoice: (id: string) => void;
+
+  activities: any[];
+  addActivity: (activity: any) => void;
 }
 
 // Mock initial data
@@ -133,6 +136,14 @@ const initialStats: DashboardStats = {
   upcomingRenewals: 8
 };
 
+const initialActivities: any[] = [
+  { id: "a1", text: "New project signed", detail: "Nexus Corporate Website", sub: "2 hours ago • John Nexus", type: "project" },
+  { id: "a2", text: "Invoice paid", detail: "₹2,50,000", sub: "4 hours ago • Nexus Properties", type: "invoice" },
+  { id: "a3", text: "Lead captured", detail: "Donna Paulsen", sub: "6 hours ago • Website", type: "lead" },
+  { id: "a4", text: "Project update", detail: "Bloom E-commerce", sub: "Yesterday • 90% Complete", type: "project" },
+  { id: "a5", text: "New client joined", detail: "Mehta Legal", sub: "2 days ago • Raj Mehta", type: "client" },
+];
+
 export const useStore = create<AppState>((set) => ({
   leads: initialLeads,
   clients: initialClients,
@@ -143,16 +154,27 @@ export const useStore = create<AppState>((set) => ({
   investments: [],
   stats: initialStats,
   sidebarOpen: false,
+  activities: initialActivities,
 
   toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
   setSidebarOpen: (isOpen) => set({ sidebarOpen: isOpen }),
 
-  addLead: (lead) => set((state) => ({ leads: [...state.leads, lead] })),
+  addActivity: (activity) => set((state) => ({ 
+    activities: [{ id: Math.random().toString(36).substr(2, 9), ...activity, createdAt: new Date().toISOString() }, ...state.activities].slice(0, 20) 
+  })),
+
+  addLead: (lead: any) => set((state) => {
+    const newActivities = [{ id: Math.random().toString(36).substr(2, 9), text: "Lead captured", detail: lead.name, sub: `Just now • ${lead.source || 'Direct'}`, type: "lead", createdAt: new Date().toISOString() }, ...state.activities].slice(0, 20);
+    return { leads: [...state.leads, lead], activities: newActivities };
+  }),
   updateLead: (id, updatedLead) => set((state) => ({
     leads: state.leads.map(lead => lead.id === id ? { ...lead, ...updatedLead } : lead)
   })),
 
-  addClient: (client) => set((state) => ({ clients: [client, ...state.clients] })),
+  addClient: (client) => set((state) => {
+    const newActivities = [{ id: Math.random().toString(36).substr(2, 9), text: "New client joined", detail: client.businessName, sub: `Just now • ${client.name}`, type: "client", createdAt: new Date().toISOString() }, ...state.activities].slice(0, 20);
+    return { clients: [client, ...state.clients], activities: newActivities };
+  }),
   updateClient: (id, updatedClient) => set((state) => ({
     clients: state.clients.map(c => c.id === id ? { ...c, ...updatedClient } : c)
   })),
@@ -160,7 +182,10 @@ export const useStore = create<AppState>((set) => ({
     clients: state.clients.filter(c => c.id !== id)
   })),
 
-  addProject: (project) => set((state) => ({ projects: [project, ...state.projects] })),
+  addProject: (project) => set((state) => {
+    const newActivities = [{ id: Math.random().toString(36).substr(2, 9), text: "New project started", detail: project.name, sub: `Just now • ${project.clientName}`, type: "project", createdAt: new Date().toISOString() }, ...state.activities].slice(0, 20);
+    return { projects: [project, ...state.projects], activities: newActivities };
+  }),
   updateProject: (id, updatedProject) => set((state) => ({
     projects: state.projects.map(p => p.id === id ? { ...p, ...updatedProject } : p)
   })),
@@ -168,10 +193,21 @@ export const useStore = create<AppState>((set) => ({
     projects: state.projects.filter(p => p.id !== id)
   })),
 
-  addInvoice: (invoice) => set((state) => ({ invoices: [invoice, ...state.invoices] })),
-  updateInvoice: (id, updatedInvoice) => set((state) => ({
-    invoices: state.invoices.map(inv => inv.id === id ? { ...inv, ...updatedInvoice } : inv)
-  })),
+  addInvoice: (invoice) => set((state) => {
+    const newActivities = [{ id: Math.random().toString(36).substr(2, 9), text: "Invoice generated", detail: invoice.number, sub: `Just now • ${invoice.client}`, type: "invoice", createdAt: new Date().toISOString() }, ...state.activities].slice(0, 20);
+    return { invoices: [invoice, ...state.invoices], activities: newActivities };
+  }),
+  updateInvoice: (id, updatedInvoice) => set((state) => {
+    const inv = state.invoices.find(i => i.id === id);
+    let activities = state.activities;
+    if (inv && updatedInvoice.status === 'paid' && (inv as any).status !== 'paid') {
+      activities = [{ id: Math.random().toString(36).substr(2, 9), text: "Invoice paid", detail: new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(updatedInvoice.amount || (inv as any).amount), sub: `Just now • ${(inv as any).client}`, type: "invoice", createdAt: new Date().toISOString() }, ...activities].slice(0, 20);
+    }
+    return {
+      invoices: state.invoices.map(inv => inv.id === id ? { ...inv, ...updatedInvoice } : inv),
+      activities
+    };
+  }),
   deleteInvoice: (id) => set((state) => ({
     invoices: state.invoices.filter(inv => inv.id !== id)
   }))

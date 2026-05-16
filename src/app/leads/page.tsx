@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Search, Filter, LayoutGrid, List, Phone, Mail, Calendar, MoreHorizontal, X, MessageSquare } from "lucide-react";
+import { useStore } from "@/lib/store";
 
 const initialColumns = [
   { id: "new", title: "New Leads", color: "#38bdf8" },
@@ -81,7 +82,10 @@ function Toggle({ checked, onChange }: { checked: boolean; onChange: (c: boolean
 
 export default function LeadsPage() {
   const [view, setView] = useState<"kanban" | "list">("kanban");
-  const [leads, setLeads] = useState<LeadType[]>(mockLeads);
+  const leads = useStore(state => state.leads) as any[];
+  const addLead = useStore(state => state.addLead);
+  const updateLead = useStore(state => state.updateLead);
+  
   const [searchQuery, setSearchQuery] = useState("");
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -118,7 +122,7 @@ export default function LeadsPage() {
   const handleDrop = (e: React.DragEvent, status: string) => {
     e.preventDefault();
     const leadId = e.dataTransfer.getData("leadId");
-    setLeads(leads.map(l => l.id === leadId ? { ...l, status } : l));
+    updateLead(leadId, { status: status as any });
     setDraggedOverCol(null);
   };
 
@@ -145,17 +149,21 @@ export default function LeadsPage() {
     const rawValue = currentLead.numericValue || 0;
     const formattedValue = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(rawValue);
 
+    const leadToSave = { 
+      ...currentLead, 
+      value: formattedValue, 
+      numericValue: rawValue,
+      status: currentLead.status || 'new'
+    } as any;
+
     if (currentLead.id) {
-      setLeads(leads.map(l => l.id === currentLead.id ? { ...l, ...currentLead, value: formattedValue, numericValue: rawValue } as LeadType : l));
+      updateLead(currentLead.id, leadToSave);
     } else {
-      setLeads([...leads, { 
+      addLead({ 
+        ...leadToSave,
         id: Date.now().toString(), 
-        ...currentLead, 
-        value: formattedValue,
-        numericValue: rawValue,
-        status: currentLead.status || 'new', 
-        date: 'Just now' 
-      } as LeadType]);
+        date: 'Just now'
+      });
     }
     
     setIsModalOpen(false);

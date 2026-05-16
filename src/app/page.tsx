@@ -15,6 +15,7 @@ export default function Dashboard() {
   const projects = useStore((state) => state.projects);
   const leads = useStore((state) => state.leads);
   const invoices = useStore((state) => state.invoices) as any[];
+  const activities = useStore((state) => state.activities);
 
   const [showReport, setShowReport] = useState(false);
 
@@ -138,15 +139,9 @@ export default function Dashboard() {
             }}>View All</button>
           </div>
           <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {[
-              { text: 'New project signed', detail: 'Website Redesign', sub: '2 hours ago • TechCorp Inc.' },
-              { text: 'Invoice paid', detail: '₹45,000', sub: '4 hours ago • Nexus Properties' },
-              { text: 'Lead converted', detail: 'Style Boutique', sub: '6 hours ago • Instagram' },
-              { text: 'Project deployed', detail: 'Bloom E-commerce', sub: 'Yesterday • Vercel' },
-              { text: 'Follow-up due', detail: 'Chen Tech', sub: 'Tomorrow • Proposal sent' },
-            ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', gap: '14px', position: 'relative' }}>
-                {i !== 4 && <div style={{
+            {activities.map((item, i) => (
+              <div key={item.id} style={{ display: 'flex', gap: '14px', position: 'relative' }}>
+                {i !== activities.length - 1 && <div style={{
                   position: 'absolute',
                   left: '14px',
                   top: '32px',
@@ -170,7 +165,7 @@ export default function Dashboard() {
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    background: '#6366f1',
+                    background: item.type === 'invoice' ? '#10b981' : item.type === 'project' ? '#8b5cf6' : item.type === 'lead' ? '#38bdf8' : '#6366f1',
                   }} />
                 </div>
                 <div style={{ minWidth: 0 }}>
