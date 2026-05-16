@@ -4,6 +4,8 @@ import { useStore } from "@/lib/store";
 import { formatCurrency } from "@/lib/utils";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, Users, Briefcase, CreditCard } from "lucide-react";
 import { RevenueChart } from "@/components/dashboard/RevenueChart";
+import ReportPreview from "@/components/ReportPreview";
+import { useState } from "react";
 
 const fmt = (n: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
 
@@ -11,7 +13,10 @@ export default function Dashboard() {
   const stats = useStore((state) => state.stats);
   const clients = useStore((state) => state.clients);
   const projects = useStore((state) => state.projects);
+  const leads = useStore((state) => state.leads);
   const invoices = useStore((state) => state.invoices) as any[];
+
+  const [showReport, setShowReport] = useState(false);
 
   const calculatedTotalRevenue = clients.reduce((sum, client) => sum + (client.totalRevenue || 0), 0);
   const calculatedActiveClients = clients.filter(c => c.status === 'active').length;
@@ -58,7 +63,7 @@ export default function Dashboard() {
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <button className="btn btn-ghost">Download Report</button>
+          <button onClick={() => setShowReport(true)} className="btn btn-ghost">Download Report</button>
           <button className="btn btn-primary">New Project</button>
         </div>
       </div>
@@ -179,6 +184,24 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Report Preview */}
+      {showReport && (
+        <ReportPreview 
+          onClose={() => setShowReport(false)}
+          data={{
+            stats: {
+              totalRevenue: calculatedTotalRevenue,
+              activeClients: calculatedActiveClients,
+              completedProjects: calculatedCompletedProjects,
+              pendingPayments: calculatedPendingPayments
+            },
+            leads: leads,
+            clients: clients,
+            projects: projects
+          }}
+        />
+      )}
     </div>
   );
 }

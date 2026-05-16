@@ -34,6 +34,13 @@ interface AppState {
 }
 
 // Mock initial data
+const initialLeads: any[] = [
+  { id: "L1", name: "Sarah Jenkins", email: "sarah@velocity.com", source: "Website", status: "new", value: 150000, date: "2024-05-10" },
+  { id: "L2", name: "Mike Ross", email: "mike@rossconsulting.com", source: "Referral", status: "contacted", value: 50000, date: "2024-05-12" },
+  { id: "L3", name: "Harvey Specter", email: "harvey@psl.com", source: "LinkedIn", status: "qualified", value: 450000, date: "2024-05-14" },
+  { id: "L4", name: "Donna Paulsen", email: "donna@psl.com", source: "Website", status: "new", value: 200000, date: "2024-05-15" },
+];
+
 const initialClients: Client[] = [
   { 
     id: "1", name: "John Nexus", businessName: "Nexus Properties", status: "active", totalRevenue: 250000, joinedAt: "2024-01-15", 
@@ -127,7 +134,7 @@ const initialStats: DashboardStats = {
 };
 
 export const useStore = create<AppState>((set) => ({
-  leads: [],
+  leads: initialLeads,
   clients: initialClients,
   projects: initialProjects,
   tasks: [],

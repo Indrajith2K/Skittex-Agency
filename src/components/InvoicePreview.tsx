@@ -222,17 +222,25 @@ export default function InvoicePreview({ invoice, onClose }: { invoice: InvoiceT
             visibility: visible;
           }
           #invoice-paper {
-            position: absolute;
-            left: 0;
-            top: 0;
+            position: static !important;
             width: 100% !important;
             max-width: none !important;
             box-shadow: none !important;
-            padding: 40px !important;
+            padding: 0 !important;
             margin: 0 !important;
             background-color: #f6f5ef !important;
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
+          }
+          .invoice-preview-overlay {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: auto !important;
+            padding: 0 !important;
+            background: none !important;
+            overflow: visible !important;
           }
           .print-hidden {
             display: none !important;
