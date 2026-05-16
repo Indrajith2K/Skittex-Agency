@@ -73,22 +73,31 @@ export default function VaultPage() {
     return path;
   }, [items, currentFolderId]);
 
-  const handleUpload = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUpload = (e: any) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
     const newItem: VaultItem = {
       id: Math.random().toString(36).substr(2, 9),
-      name: "New_Upload_" + (items.length + 1) + ".pdf",
-      type: "pdf",
-      size: "1.2 MB",
+      name: file.name,
+      type: file.type.includes('image') ? 'image' : file.type.includes('pdf') ? 'pdf' : 'document',
+      size: (file.size / (1024 * 1024)).toFixed(1) + " MB",
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }),
       parentId: currentFolderId
     };
-    setItems([...items, newItem]);
+    setItems([newItem, ...items]);
     setIsUploadModalOpen(false);
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px', height: '100%' }}>
+      {/* Hidden File Input */}
+      <input 
+        type="file" 
+        id="fileInput" 
+        style={{ display: 'none' }} 
+        onChange={handleUpload}
+      />
       <div className="page-header">
         <div>
           <h1 style={{ fontSize: '28px', fontFamily: '"Outfit", sans-serif', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', margin: 0 }}>Document Vault</h1>
@@ -281,7 +290,11 @@ export default function VaultPage() {
 
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setIsUploadModalOpen(false)} className="btn btn-ghost" style={{ flex: 1 }}>Cancel</button>
-              <button onClick={handleUpload} className="btn btn-primary" style={{ flex: 1 }}>Start Upload</button>
+              <button 
+                onClick={() => document.getElementById('fileInput')?.click()} 
+                className="btn btn-primary" 
+                style={{ flex: 1 }}
+              >Select & Upload</button>
             </div>
           </div>
         </div>
