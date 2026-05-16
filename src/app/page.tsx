@@ -2,7 +2,7 @@
 
 import { useStore } from "@/lib/store";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowUpRight, ArrowDownRight, TrendingUp, Users, Briefcase, CreditCard } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, TrendingUp, Users, Briefcase, CreditCard, X } from "lucide-react";
 import { RevenueChart } from "@/components/dashboard/RevenueChart";
 import ReportPreview from "@/components/ReportPreview";
 import { useState } from "react";
@@ -18,6 +18,7 @@ export default function Dashboard() {
   const activities = useStore((state) => state.activities);
 
   const [showReport, setShowReport] = useState(false);
+  const [showAllActivities, setShowAllActivities] = useState(false);
 
   const calculatedTotalRevenue = clients.reduce((sum, client) => sum + (client.totalRevenue || 0), 0);
   const calculatedActiveClients = clients.filter(c => c.status === 'active').length;
@@ -129,14 +130,17 @@ export default function Dashboard() {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h2 className="section-title">Recent Activity</h2>
-            <button style={{
-              fontSize: '12px',
-              color: '#6366f1',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontWeight: 500,
-            }}>View All</button>
+            <button 
+              onClick={() => setShowAllActivities(true)}
+              style={{
+                fontSize: '12px',
+                color: '#6366f1',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >View All</button>
           </div>
           <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {activities.map((item, i) => (
@@ -196,6 +200,96 @@ export default function Dashboard() {
             projects: projects
           }}
         />
+      )}
+
+      {/* Activities Modal */}
+      {showAllActivities && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.85)',
+          backdropFilter: 'blur(10px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: '24px',
+        }}>
+          <div className="glass-card" style={{ 
+            width: '100%', 
+            maxWidth: '500px', 
+            maxHeight: '80vh', 
+            display: 'flex', 
+            flexDirection: 'column',
+            padding: '32px',
+            position: 'relative'
+          }}>
+            <button 
+              onClick={() => setShowAllActivities(false)}
+              style={{
+                position: 'absolute',
+                top: '24px',
+                right: '24px',
+                background: 'none',
+                border: 'none',
+                color: '#8b8ba7',
+                cursor: 'pointer'
+              }}
+            ><X style={{ width: '20px', height: '20px' }} /></button>
+
+            <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>Activity History</h2>
+            <p style={{ fontSize: '13px', color: '#8b8ba7', marginBottom: '24px' }}>Full log of recent agency actions</p>
+
+            <div style={{ flex: 1, overflowY: 'auto', paddingRight: '8px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {activities.map((item, i) => (
+                <div key={item.id} style={{ display: 'flex', gap: '14px', position: 'relative' }}>
+                  {i !== activities.length - 1 && <div style={{
+                    position: 'absolute',
+                    left: '14px',
+                    top: '32px',
+                    bottom: '-20px',
+                    width: '1px',
+                    background: 'rgba(255,255,255,0.06)',
+                  }} />}
+                  <div style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    zIndex: 1,
+                  }}>
+                    <div style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: item.type === 'invoice' ? '#10b981' : item.type === 'project' ? '#8b5cf6' : item.type === 'lead' ? '#38bdf8' : '#6366f1',
+                    }} />
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: '13px', color: '#e0e0ff', margin: 0, lineHeight: '1.4' }}>
+                      {item.text}: <span style={{ fontWeight: 600, color: '#818cf8' }}>{item.detail}</span>
+                    </p>
+                    <p style={{ fontSize: '11px', color: '#5a5a78', marginTop: '3px' }}>{item.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <button 
+              onClick={() => setShowAllActivities(false)}
+              className="btn btn-primary" 
+              style={{ marginTop: '24px', width: '100%' }}
+            >Close History</button>
+          </div>
+        </div>
       )}
     </div>
   );
