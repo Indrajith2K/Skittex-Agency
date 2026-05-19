@@ -1,11 +1,26 @@
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
+import { redirect } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user || user.email !== "indrajithgamedevelouper2021@gmail.com") {
+    redirect("/login");
+  }
+
   return (
     <div className="app-layout">
       <Sidebar />
