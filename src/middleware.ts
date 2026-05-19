@@ -9,10 +9,10 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
 
-    // Check Supabase auth cookie
+    // Check Supabase auth cookie strictly
     const hasSession = request.cookies
         .getAll()
-        .some((cookie) => cookie.name.includes("sb-"));
+        .some((cookie) => cookie.name.includes("auth-token"));
 
     if (!hasSession) {
         return NextResponse.redirect(new URL("/login", request.url));
