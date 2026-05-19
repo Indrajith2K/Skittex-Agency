@@ -33,10 +33,23 @@ export default function LoginPage() {
   const [emailFocused, setEmailFocused]   = useState(false);
   const [passFocused, setPassFocused]     = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setIsSubmitting(true);
-    setTimeout(() => router.push("/"), 2000);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      alert(error.message);
+      setIsSubmitting(false);
+      return;
+    }
+
+    router.push("/");
   };
 
   const handleGoogleLogin = async () => {
