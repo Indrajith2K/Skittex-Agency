@@ -67,7 +67,7 @@ export default function LoginPage() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: "https://billings.skittex.in/auth/callback"
+        redirectTo: "https://billings.skittex.in"
       }
     });
   };
