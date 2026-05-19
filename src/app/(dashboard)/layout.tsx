@@ -17,7 +17,7 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user || user.email !== "indrajithgamedevelouper2021@gmail.com") {
+  if (!user || user.email?.toLowerCase() !== "indrajithgamedevelouper2021@gmail.com") {
     redirect("/login");
   }
 
