@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 // ─── Skittex Dark Pro Design Tokens ─────────────────────────────────────────
 const t = {
@@ -36,6 +37,15 @@ export default function LoginPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setTimeout(() => router.push("/"), 2000);
+  };
+
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "https://billings.skittex.in"
+      }
+    });
   };
 
   // ─── Shared input-wrapper style ─────────────────────────────────────────
@@ -355,6 +365,7 @@ export default function LoginPage() {
             {/* Google Button */}
             <button
               type="button"
+              onClick={handleGoogleLogin}
               style={{
                 width:         "100%",
                 display:       "flex",
