@@ -2,30 +2,111 @@
 
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { Download, Calendar } from 'lucide-react';
+import { useStore } from '@/lib/store';
 
 const CHART_COLORS = ["#6366f1", "#8b5cf6", "#10b981", "#f59e0b"];
-
-const revenueData = [
-  { name: 'Web Dev', value: 450000 },
-  { name: 'SEO', value: 200000 },
-  { name: 'Hosting', value: 50000 },
-  { name: 'Consulting', value: 150000 },
-];
-
-const growthData = [
-  { month: 'Jan', revenue: 120000 },
-  { month: 'Feb', revenue: 150000 },
-  { month: 'Mar', revenue: 180000 },
-  { month: 'Apr', revenue: 250000 },
-  { month: 'May', revenue: 300000 },
-  { month: 'Jun', revenue: 400000 },
-];
 
 const cardBase: React.CSSProperties = { background: 'rgba(20,20,28,0.6)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' };
 
 const fmt = (n: number) => `₹${(n/1000).toFixed(0)}k`;
 
+// Helper keyword categorizer to map invoice item descriptions to services
+const getServiceCategory = (desc: string): string => {
+  const d = desc.toLowerCase();
+  if (d.includes('web') || d.includes('dev') || d.includes('design') || d.includes('implement') || d.includes('react') || d.includes('ui') || d.includes('ux') || d.includes('dashboard') || d.includes('landing') || d.includes('portal') || d.includes('platform') || d.includes('e-commerce') || d.includes('app')) {
+    return 'Web Dev';
+  }
+  if (d.includes('seo') || d.includes('marketing') || d.includes('ads') || d.includes('campaign') || d.includes('optim') || d.includes('traffic')) {
+    return 'SEO';
+  }
+  if (d.includes('host') || d.includes('domain') || d.includes('cloud') || d.includes('server') || d.includes('maintenance')) {
+    return 'Hosting';
+  }
+  return 'Consulting'; // default fallback (for strategy, compliance, advisory, etc.)
+};
+
 export default function AnalyticsPage() {
+  const invoices = useStore(state => state.invoices) as any[];
+
+  // --- 1. Cumulative Revenue by Service (Donut Chart) ---
+  // Baseline service values
+  const serviceBaselines = {
+    'Web Dev': 450000,
+    'SEO': 200000,
+    'Hosting': 50000,
+    'Consulting': 150000,
+  };
+
+  // Real-time dynamic values calculated from database
+  const serviceTotals = {
+    'Web Dev': 0,
+    'SEO': 0,
+    'Hosting': 0,
+    'Consulting': 0,
+  };
+
+  invoices.filter((inv: any) => inv.status === 'paid').forEach((inv: any) => {
+    if (inv.items && Array.isArray(inv.items) && inv.items.length > 0) {
+      inv.items.forEach((item: any) => {
+        const category = getServiceCategory(item.description);
+        serviceTotals[category as keyof typeof serviceTotals] += (item.qty * item.price) || 0;
+      });
+    } else {
+      serviceTotals['Consulting'] += inv.amount || 0;
+    }
+  });
+
+  // Cumulative blend: baseline + live database changes
+  const revenueData = [
+    { name: 'Web Dev', value: serviceBaselines['Web Dev'] + serviceTotals['Web Dev'] },
+    { name: 'SEO', value: serviceBaselines['SEO'] + serviceTotals['SEO'] },
+    { name: 'Hosting', value: serviceBaselines['Hosting'] + serviceTotals['Hosting'] },
+    { name: 'Consulting', value: serviceBaselines['Consulting'] + serviceTotals['Consulting'] },
+  ];
+
+  const totalRevenueValue = revenueData.reduce((sum, item) => sum + item.value, 0) || 1;
+
+  // --- 2. Cumulative Monthly Revenue Growth (Bar Chart) ---
+  // Baseline monthly values
+  const monthlyBaselines: { [key: string]: number } = {
+    'Jan': 120000,
+    'Feb': 150000,
+    'Mar': 180000,
+    'Apr': 250000,
+    'May': 300000,
+    'Jun': 400000,
+  };
+
+  // Real-time monthly values calculated from database
+  const monthlyTotals: { [key: string]: number } = {
+    'Jan': 0,
+    'Feb': 0,
+    'Mar': 0,
+    'Apr': 0,
+    'May': 0,
+    'Jun': 0,
+  };
+
+  invoices.filter((inv: any) => inv.status === 'paid').forEach((inv: any) => {
+    if (!inv.date) return;
+    const dateObj = new Date(inv.date);
+    if (isNaN(dateObj.getTime())) return;
+    const monthName = dateObj.toLocaleString('en-US', { month: 'short' }); // e.g. "Jan", "May"
+    if (monthName in monthlyTotals) {
+      monthlyTotals[monthName] += inv.amount || 0;
+    }
+  });
+
+  // Cumulative blend: baseline + live database changes
+  const growthData = [
+    { month: 'Jan', revenue: monthlyBaselines['Jan'] + monthlyTotals['Jan'] },
+    { month: 'Feb', revenue: monthlyBaselines['Feb'] + monthlyTotals['Feb'] },
+    { month: 'Mar', revenue: monthlyBaselines['Mar'] + monthlyTotals['Mar'] },
+    { month: 'Apr', revenue: monthlyBaselines['Apr'] + monthlyTotals['Apr'] },
+    { month: 'May', revenue: monthlyBaselines['May'] + monthlyTotals['May'] },
+    { month: 'Jun', revenue: monthlyBaselines['Jun'] + monthlyTotals['Jun'] },
+  ];
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       <div className="page-header">
@@ -62,7 +143,7 @@ export default function AnalyticsPage() {
               <div key={entry.name} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
                 <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: CHART_COLORS[i], flexShrink: 0 }} />
                 <span style={{ color: '#8b8ba7', flex: 1 }}>{entry.name}</span>
-                <span style={{ color: '#fff', fontWeight: 600 }}>{Math.round((entry.value / 850000) * 100)}%</span>
+                <span style={{ color: '#fff', fontWeight: 600 }}>{Math.round((entry.value / totalRevenueValue) * 100)}%</span>
               </div>
             ))}
           </div>

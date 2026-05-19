@@ -1,4 +1,71 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Hanken+Grotesk:wght@100..900&display=swap');
+
+@theme {
+  --color-surface: #121317;
+  --color-on-surface: #f0f1f2;
+  --color-surface-container-lowest: #0d0e12;
+  --color-surface-container-low: #1a1b20;
+  --color-surface-container: #232429;
+  --color-surface-container-high: #2d2e33;
+  --color-surface-container-highest: #38393d;
+  --color-primary: #d81e36;
+  --color-on-primary: #ffffff;
+  --color-secondary: #909196;
+  --color-outline: #38393d;
+  --color-outline-variant: #2d2e33;
+  
+  --font-headline-lg-mobile: 'Sora', sans-serif;
+  --font-display-xl: 'Sora', sans-serif;
+  --font-body-md: 'Hanken Grotesk', sans-serif;
+  --font-body-lg: 'Hanken Grotesk', sans-serif;
+  --font-headline-md: 'Sora', sans-serif;
+  --font-headline-lg: 'Sora', sans-serif;
+  --font-label-md: 'Sora', sans-serif;
+
+  --font-size-headline-lg-mobile: 32px;
+  --line-height-headline-lg-mobile: 40px;
+  
+  --font-size-display-xl: 72px;
+  --line-height-display-xl: 80px;
+
+  --font-size-body-md: 16px;
+  --line-height-body-md: 24px;
+
+  --font-size-body-lg: 18px;
+  --line-height-body-lg: 28px;
+
+  --font-size-headline-md: 32px;
+  --line-height-headline-md: 40px;
+
+  --font-size-headline-lg: 48px;
+  --line-height-headline-lg: 56px;
+
+  --font-size-label-md: 14px;
+  --line-height-label-md: 20px;
+}
+
+/* ===== PREMIUM LOGIN CARD & GLOBAL HELPERS ===== */
+.premium-card {
+  background: linear-gradient(145deg, #1a1b20 0%, #121317 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.focused-input {
+  border: 1px solid var(--color-outline-variant) !important;
+  background-color: var(--color-surface-container-lowest) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.focused-input:focus-within {
+  border-color: #d81e36 !important;
+  background-color: #1a1b20 !important;
+  box-shadow: 0 0 0 1px rgba(216, 30, 54, 0.2) !important;
+}
+
+.dragon-gradient {
+  background: linear-gradient(135deg, #d81e36 0%, #b00024 100%) !important;
+}
 
 /* AgencyOS Global Styles */
 

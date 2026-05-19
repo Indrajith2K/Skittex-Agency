@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Sidebar } from "@/components/Sidebar";
-import { Header } from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "Skittex CRM | Admin Dashboard",
@@ -37,19 +35,9 @@ export default function RootLayout({
             radial-gradient(ellipse 400px 300px at 50% 90%, rgba(236, 72, 153, 0.04), transparent)
           `,
         }} />
-
-        {/* App Shell */}
-        <div className="app-layout">
-          <Sidebar />
-          {/* Main content area */}
-          <div className="main-area">
-            <Header />
-          <main className="main-padding" style={{ flex: 1, width: '100%', maxWidth: '1280px', marginLeft: 'auto', marginRight: 'auto' }}>
-              {children}
-            </main>
-          </div>
-        </div>
+        {children}
       </body>
     </html>
   );
 }
+

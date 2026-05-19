@@ -50,7 +50,7 @@ const cardStyle: React.CSSProperties = {
 
 function Toggle({ checked, onChange }: { checked: boolean; onChange: (c: boolean) => void }) {
   return (
-    <button 
+    <button
       onClick={(e) => { e.preventDefault(); onChange(!checked); }}
       style={{
         width: '36px',
@@ -83,12 +83,12 @@ export default function LeadsPage() {
   const [view, setView] = useState<"kanban" | "list">("kanban");
   const [leads, setLeads] = useState<LeadType[]>(mockLeads);
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentLead, setCurrentLead] = useState<Partial<LeadType>>({ 
-    name: '', company: '', numericValue: 0, tag: 'Website', phone: '', countryCode: '+91', isWhatsappSame: true, whatsappNumber: '', whatsappCountryCode: '+91', email: '' 
+  const [currentLead, setCurrentLead] = useState<Partial<LeadType>>({
+    name: '', company: '', numericValue: 0, tag: 'Website', phone: '', countryCode: '+91', isWhatsappSame: true, whatsappNumber: '', whatsappCountryCode: '+91', email: ''
   });
-  
+
   const [draggedOverCol, setDraggedOverCol] = useState<string | null>(null);
 
   const handleDragStart = (e: React.DragEvent, id: string) => {
@@ -123,8 +123,8 @@ export default function LeadsPage() {
   };
 
   const openAddModal = (status = 'new') => {
-    setCurrentLead({ 
-      name: '', company: '', numericValue: 0, tag: 'Website', phone: '', countryCode: '+91', isWhatsappSame: true, whatsappNumber: '', whatsappCountryCode: '+91', email: '', status 
+    setCurrentLead({
+      name: '', company: '', numericValue: 0, tag: 'Website', phone: '', countryCode: '+91', isWhatsappSame: true, whatsappNumber: '', whatsappCountryCode: '+91', email: '', status
     });
     setIsModalOpen(true);
   };
@@ -148,16 +148,16 @@ export default function LeadsPage() {
     if (currentLead.id) {
       setLeads(leads.map(l => l.id === currentLead.id ? { ...l, ...currentLead, value: formattedValue, numericValue: rawValue } as LeadType : l));
     } else {
-      setLeads([...leads, { 
-        id: Date.now().toString(), 
-        ...currentLead, 
+      setLeads([...leads, {
+        id: Date.now().toString(),
+        ...currentLead,
         value: formattedValue,
         numericValue: rawValue,
-        status: currentLead.status || 'new', 
-        date: 'Just now' 
+        status: currentLead.status || 'new',
+        date: 'Just now'
       } as LeadType]);
     }
-    
+
     setIsModalOpen(false);
   };
 
@@ -178,7 +178,7 @@ export default function LeadsPage() {
               <List style={{ width: '16px', height: '16px' }} />
             </button>
           </div>
-          <button 
+          <button
             onClick={() => openAddModal()}
             style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 600, background: 'linear-gradient(135deg, #6366f1, #7c3aed)', color: '#fff', border: 'none', cursor: 'pointer', boxShadow: '0 4px 15px rgba(99,102,241,0.3)' }}
           >
@@ -191,12 +191,12 @@ export default function LeadsPage() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
         <div style={{ position: 'relative', flex: 1, minWidth: '260px', maxWidth: '400px' }}>
           <Search style={{ width: '15px', height: '15px', position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#5a5a78' }} />
-          <input 
-            type="text" 
-            placeholder="Search leads by name or company..." 
+          <input
+            type="text"
+            placeholder="Search leads by name or company..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ width: '100%', height: '38px', paddingLeft: '36px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', color: '#f0f0ff', fontSize: '13px', fontFamily: '"Inter", sans-serif', outline: 'none' }} 
+            style={{ width: '100%', height: '38px', paddingLeft: '36px', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '10px', color: '#f0f0ff', fontSize: '13px', fontFamily: '"Inter", sans-serif', outline: 'none' }}
           />
         </div>
         <button style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '9px 14px', borderRadius: '10px', fontSize: '13px', fontWeight: 500, background: 'transparent', color: '#8b8ba7', border: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer' }}>
@@ -205,23 +205,23 @@ export default function LeadsPage() {
       </div>
 
       {/* Kanban Board */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '12px', 
-        flex: 1, 
-        overflowX: 'auto', 
-        paddingBottom: '20px', 
+      <div style={{
+        display: 'flex',
+        gap: '12px',
+        flex: 1,
+        overflowX: 'auto',
+        paddingBottom: '20px',
         minHeight: '500px',
         alignItems: 'flex-start'
       }}>
         {initialColumns.map((col) => {
-          const colLeads = leads.filter(l => 
-            l.status === col.id && 
-            (l.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-             l.company.toLowerCase().includes(searchQuery.toLowerCase()))
+          const colLeads = leads.filter(l =>
+            l.status === col.id &&
+            (l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              l.company.toLowerCase().includes(searchQuery.toLowerCase()))
           );
           const isOver = draggedOverCol === col.id;
-          
+
           return (
             <div key={col.id} style={{ minWidth: '180px', flex: 1, display: 'flex', flexDirection: 'column' }}>
               {/* Column Header */}
@@ -236,17 +236,17 @@ export default function LeadsPage() {
               </div>
 
               {/* Column Body */}
-              <div 
+              <div
                 onDragOver={(e) => handleDragOver(e, col.id)}
                 onDragLeave={handleDragLeave}
                 onDrop={(e) => handleDrop(e, col.id)}
-                style={{ 
-                  background: isOver ? 'rgba(99, 102, 241, 0.05)' : 'rgba(20, 20, 28, 0.4)', 
-                  border: isOver ? `1px solid ${col.color}40` : '1px solid rgba(255,255,255,0.04)', 
-                  borderRadius: '16px', 
-                  padding: '12px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
+                style={{
+                  background: isOver ? 'rgba(99, 102, 241, 0.05)' : 'rgba(20, 20, 28, 0.4)',
+                  border: isOver ? `1px solid ${col.color}40` : '1px solid rgba(255,255,255,0.04)',
+                  borderRadius: '16px',
+                  padding: '12px',
+                  display: 'flex',
+                  flexDirection: 'column',
                   gap: '12px',
                   transition: 'all 0.2s ease',
                   minHeight: '100px'
@@ -254,13 +254,13 @@ export default function LeadsPage() {
               >
                 {colLeads.map(lead => {
                   const hasWhatsapp = lead.isWhatsappSame ? !!lead.phone : !!lead.whatsappNumber;
-                  const whatsappLink = lead.isWhatsappSame 
-                    ? `https://wa.me/${(lead.countryCode || '').replace('+','')}${lead.phone}`
-                    : `https://wa.me/${(lead.whatsappCountryCode || '').replace('+','')}${lead.whatsappNumber}`;
-                  
+                  const whatsappLink = lead.isWhatsappSame
+                    ? `https://wa.me/${(lead.countryCode || '').replace('+', '')}${lead.phone}`
+                    : `https://wa.me/${(lead.whatsappCountryCode || '').replace('+', '')}${lead.whatsappNumber}`;
+
                   return (
-                    <div 
-                      key={lead.id} 
+                    <div
+                      key={lead.id}
                       draggable
                       onDragStart={(e) => handleDragStart(e, lead.id)}
                       onDragEnd={handleDragEnd}
@@ -282,21 +282,21 @@ export default function LeadsPage() {
                       <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', margin: '14px 0' }} />
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', gap: '8px' }}>
-                          <button 
+                          <button
                             onClick={(e) => { e.stopPropagation(); lead.phone ? window.open(`tel:${lead.countryCode || ''}${lead.phone}`) : alert('No phone number saved') }}
                             style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8b8ba7', cursor: 'pointer' }}
                           >
                             <Phone style={{ width: '12px', height: '12px' }} />
                           </button>
                           {hasWhatsapp && (
-                            <button 
+                            <button
                               onClick={(e) => { e.stopPropagation(); window.open(whatsappLink, '_blank') }}
                               style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8b8ba7', cursor: 'pointer' }}
                             >
                               <MessageSquare style={{ width: '12px', height: '12px' }} />
                             </button>
                           )}
-                          <button 
+                          <button
                             onClick={(e) => { e.stopPropagation(); lead.email ? window.open(`mailto:${lead.email}`) : alert('No email saved') }}
                             style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8b8ba7', cursor: 'pointer' }}
                           >
@@ -308,14 +308,14 @@ export default function LeadsPage() {
                     </div>
                   )
                 })}
-                
+
                 {colLeads.length === 0 && !isOver && (
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '120px', border: '1px dashed rgba(255,255,255,0.05)', borderRadius: '12px', color: '#5a5a78', fontSize: '13px' }}>
                     No leads here
                   </div>
                 )}
-                
-                <button 
+
+                <button
                   onClick={() => openAddModal(col.id)}
                   style={{ width: '100%', padding: '12px', borderRadius: '12px', border: '1px dashed rgba(255,255,255,0.08)', background: 'transparent', color: '#5a5a78', fontSize: '13px', cursor: 'pointer', fontFamily: '"Inter", sans-serif' }}
                 >
@@ -339,16 +339,16 @@ export default function LeadsPage() {
                 <X style={{ width: '20px', height: '20px' }} />
               </button>
             </div>
-            
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div className="responsive-grid-2" style={{ gap: '16px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>Contact Name</label>
-                  <input type="text" className="input-base" value={currentLead.name} onChange={e => setCurrentLead({...currentLead, name: e.target.value})} placeholder="e.g. John Doe" />
+                  <input type="text" className="input-base" value={currentLead.name} onChange={e => setCurrentLead({ ...currentLead, name: e.target.value })} placeholder="e.g. John Doe" />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>Company</label>
-                  <input type="text" className="input-base" value={currentLead.company} onChange={e => setCurrentLead({...currentLead, company: e.target.value})} placeholder="e.g. Acme Corp" />
+                  <input type="text" className="input-base" value={currentLead.company} onChange={e => setCurrentLead({ ...currentLead, company: e.target.value })} placeholder="e.g. Acme Corp" />
                 </div>
               </div>
 
@@ -356,58 +356,58 @@ export default function LeadsPage() {
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>Phone Number</label>
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    <select 
-                      className="input-base" 
-                      style={{ width: '90px', appearance: 'none', padding: '0 10px' }} 
-                      value={currentLead.countryCode || '+91'} 
-                      onChange={e => setCurrentLead({...currentLead, countryCode: e.target.value})}
+                    <select
+                      className="input-base"
+                      style={{ width: '90px', appearance: 'none', padding: '0 10px' }}
+                      value={currentLead.countryCode || '+91'}
+                      onChange={e => setCurrentLead({ ...currentLead, countryCode: e.target.value })}
                     >
                       <option value="+91">IN (+91)</option>
                       <option value="+1">US (+1)</option>
                       <option value="+44">UK (+44)</option>
                     </select>
-                    <input 
-                      type="text" 
-                      className="input-base" 
+                    <input
+                      type="text"
+                      className="input-base"
                       style={{ flex: 1 }}
-                      value={currentLead.phone} 
-                      onChange={e => setCurrentLead({...currentLead, phone: e.target.value})} 
-                      placeholder="98765 43210" 
+                      value={currentLead.phone}
+                      onChange={e => setCurrentLead({ ...currentLead, phone: e.target.value })}
+                      placeholder="98765 43210"
                     />
                   </div>
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>Email Address</label>
-                  <input type="email" className="input-base" value={currentLead.email} onChange={e => setCurrentLead({...currentLead, email: e.target.value})} placeholder="john@acme.com" />
+                  <input type="email" className="input-base" value={currentLead.email} onChange={e => setCurrentLead({ ...currentLead, email: e.target.value })} placeholder="john@acme.com" />
                 </div>
               </div>
 
               <div style={{ background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <p style={{ fontSize: '14px', color: '#fff', fontWeight: 500, margin: 0 }}>Is WhatsApp same as phone?</p>
-                  <Toggle checked={currentLead.isWhatsappSame ?? true} onChange={(c) => setCurrentLead({...currentLead, isWhatsappSame: c})} />
+                  <Toggle checked={currentLead.isWhatsappSame ?? true} onChange={(c) => setCurrentLead({ ...currentLead, isWhatsappSame: c })} />
                 </div>
                 {!currentLead.isWhatsappSame && (
                   <div style={{ marginTop: '16px' }}>
                     <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>WhatsApp Number</label>
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <select 
-                        className="input-base" 
-                        style={{ width: '90px', appearance: 'none', padding: '0 10px' }} 
-                        value={currentLead.whatsappCountryCode || '+91'} 
-                        onChange={e => setCurrentLead({...currentLead, whatsappCountryCode: e.target.value})}
+                      <select
+                        className="input-base"
+                        style={{ width: '90px', appearance: 'none', padding: '0 10px' }}
+                        value={currentLead.whatsappCountryCode || '+91'}
+                        onChange={e => setCurrentLead({ ...currentLead, whatsappCountryCode: e.target.value })}
                       >
                         <option value="+91">IN (+91)</option>
                         <option value="+1">US (+1)</option>
                         <option value="+44">UK (+44)</option>
                       </select>
-                      <input 
-                        type="text" 
-                        className="input-base" 
+                      <input
+                        type="text"
+                        className="input-base"
                         style={{ flex: 1 }}
-                        value={currentLead.whatsappNumber || ''} 
-                        onChange={e => setCurrentLead({...currentLead, whatsappNumber: e.target.value})} 
-                        placeholder="98765 43210" 
+                        value={currentLead.whatsappNumber || ''}
+                        onChange={e => setCurrentLead({ ...currentLead, whatsappNumber: e.target.value })}
+                        placeholder="98765 43210"
                       />
                     </div>
                   </div>
@@ -417,17 +417,17 @@ export default function LeadsPage() {
               <div className="responsive-grid-2" style={{ gap: '16px' }}>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>Estimated Value (₹)</label>
-                  <input 
-                    type="number" 
-                    className="input-base" 
-                    value={currentLead.numericValue} 
-                    onChange={e => setCurrentLead({...currentLead, numericValue: Number(e.target.value)})} 
-                    placeholder="e.g. 50000" 
+                  <input
+                    type="number"
+                    className="input-base"
+                    value={currentLead.numericValue}
+                    onChange={e => setCurrentLead({ ...currentLead, numericValue: Number(e.target.value) })}
+                    placeholder="e.g. 50000"
                   />
                 </div>
                 <div>
                   <label style={{ display: 'block', fontSize: '13px', color: '#8b8ba7', marginBottom: '8px' }}>Service Required</label>
-                  <select className="input-base" style={{ appearance: 'none' }} value={currentLead.tag} onChange={e => setCurrentLead({...currentLead, tag: e.target.value})}>
+                  <select className="input-base" style={{ appearance: 'none' }} value={currentLead.tag} onChange={e => setCurrentLead({ ...currentLead, tag: e.target.value })}>
                     <option value="Website">Website</option>
                     <option value="Web App">Web App</option>
                     <option value="SEO">SEO</option>
@@ -436,7 +436,7 @@ export default function LeadsPage() {
                   </select>
                 </div>
               </div>
-              
+
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '16px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px' }}>
                 <button onClick={() => setIsModalOpen(false)} className="btn btn-ghost">Cancel</button>
                 <button onClick={handleSaveLead} className="btn btn-primary" disabled={!currentLead.name || !currentLead.company}>
