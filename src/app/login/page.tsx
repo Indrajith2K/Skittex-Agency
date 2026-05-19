@@ -6,32 +6,32 @@ import { supabase } from "@/lib/supabase";
 
 // ─── Skittex Dark Pro Design Tokens ─────────────────────────────────────────
 const t = {
-  surface:          "#121317",
-  surfaceLow:       "#1a1b20",
+  surface: "#121317",
+  surfaceLow: "#1a1b20",
   surfaceContainer: "#1f1f24",
-  surfaceHigh:      "#292a2e",
-  surfaceHighest:   "#343439",
-  surfaceLowest:    "#0d0e12",
-  onSurface:        "#e3e2e7",
+  surfaceHigh: "#292a2e",
+  surfaceHighest: "#343439",
+  surfaceLowest: "#0d0e12",
+  onSurface: "#e3e2e7",
   onSurfaceVariant: "#e5bdbb",
-  outline:          "#ac8887",
-  outlineVariant:   "#5c3f3f",
-  primary:          "#ffb3b1",
+  outline: "#ac8887",
+  outlineVariant: "#5c3f3f",
+  primary: "#ffb3b1",
   primaryContainer: "#d81e36",
-  onPrimary:        "#ffffff",
-  secondary:        "#c6c6c9",
-  background:       "#121317",
+  onPrimary: "#ffffff",
+  secondary: "#c6c6c9",
+  background: "#121317",
 };
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [showPassword, setShowPassword]   = useState(false);
-  const [email, setEmail]                 = useState("");
-  const [password, setPassword]           = useState("");
-  const [isSubmitting, setIsSubmitting]   = useState(false);
-  const [emailFocused, setEmailFocused]   = useState(false);
-  const [passFocused, setPassFocused]     = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passFocused, setPassFocused] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,36 +74,36 @@ export default function LoginPage() {
 
   // ─── Shared input-wrapper style ─────────────────────────────────────────
   const inputWrapper = (focused: boolean): React.CSSProperties => ({
-    display:        "flex",
-    alignItems:     "center",
-    gap:            "12px",
-    padding:        "0 16px",
-    borderRadius:   "8px",
-    border:         `1.5px solid ${focused ? t.primaryContainer : t.outlineVariant}`,
-    background:     focused ? t.surfaceLow : t.surfaceLowest,
-    boxShadow:      focused ? `0 0 0 3px rgba(216, 30, 54, 0.20)` : "none",
-    transition:     "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    padding: "0 16px",
+    borderRadius: "8px",
+    border: `1.5px solid ${focused ? t.primaryContainer : t.outlineVariant}`,
+    background: focused ? t.surfaceLow : t.surfaceLowest,
+    boxShadow: focused ? `0 0 0 3px rgba(216, 30, 54, 0.20)` : "none",
+    transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
   });
 
   const inputStyle: React.CSSProperties = {
-    flex:           1,
-    padding:        "14px 0",
-    border:         "none",
-    background:     "transparent",
-    outline:        "none",
-    fontFamily:     "'Hanken Grotesk', sans-serif",
-    fontSize:       "16px",
-    lineHeight:     "24px",
-    color:          t.onSurface,
+    flex: 1,
+    padding: "14px 0",
+    border: "none",
+    background: "transparent",
+    outline: "none",
+    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontSize: "16px",
+    lineHeight: "24px",
+    color: t.onSurface,
   };
 
   const iconStyle: React.CSSProperties = {
-    fontFamily:            "'Material Symbols Outlined'",
+    fontFamily: "'Material Symbols Outlined'",
     fontVariationSettings: "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24",
-    fontSize:              "20px",
-    color:                 t.outline,
-    userSelect:            "none",
-    flexShrink:            0,
+    fontSize: "20px",
+    color: t.outline,
+    userSelect: "none",
+    flexShrink: 0,
   };
 
   return (
@@ -121,53 +121,53 @@ export default function LoginPage() {
       {/* ── Page Shell ────────────────────────────────────────────────── */}
       <div
         style={{
-          minHeight:      "100vh",
-          width:          "100%",
-          background:     t.background,
-          display:        "flex",
-          flexDirection:  "column",
-          alignItems:     "center",
+          minHeight: "100vh",
+          width: "100%",
+          background: t.background,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           justifyContent: "center",
-          padding:        "48px 16px",
-          boxSizing:      "border-box",
-          position:       "relative",
-          overflowX:      "hidden",
+          padding: "48px 16px",
+          boxSizing: "border-box",
+          position: "relative",
+          overflowX: "hidden",
         }}
       >
         {/* Subtle ambient glow — dark mode version */}
         <div style={{
-          position:     "fixed",
-          top:          "-20%",
-          right:        "-10%",
-          width:        "500px",
-          height:       "500px",
-          background:   "radial-gradient(circle, rgba(216,30,54,0.10) 0%, transparent 70%)",
-          pointerEvents:"none",
-          zIndex:       0,
+          position: "fixed",
+          top: "-20%",
+          right: "-10%",
+          width: "500px",
+          height: "500px",
+          background: "radial-gradient(circle, rgba(216,30,54,0.10) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
           borderRadius: "9999px",
         }} />
         <div style={{
-          position:     "fixed",
-          bottom:       "-20%",
-          left:         "-10%",
-          width:        "400px",
-          height:       "400px",
-          background:   "radial-gradient(circle, rgba(216,30,54,0.07) 0%, transparent 70%)",
-          pointerEvents:"none",
-          zIndex:       0,
+          position: "fixed",
+          bottom: "-20%",
+          left: "-10%",
+          width: "400px",
+          height: "400px",
+          background: "radial-gradient(circle, rgba(216,30,54,0.07) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
           borderRadius: "9999px",
         }} />
 
         {/* ── Content wrapper ─────────────────────────────────────────── */}
         <div
           style={{
-            width:     "100%",
-            maxWidth:  "480px",
-            display:   "flex",
+            width: "100%",
+            maxWidth: "480px",
+            display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            position:  "relative",
-            zIndex:    1,
+            position: "relative",
+            zIndex: 1,
           }}
         >
           {/* ── Logo ────────────────────────────────────────────────── */}
@@ -176,10 +176,10 @@ export default function LoginPage() {
               alt="Skittex Studio"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuChKJE2-GXQBRNUMfpGyDxfDj3C-r-j9Pm88ZR4KZrDG4C67ucPxTD9I7hg5NKLLyBZB_ld5863emL8SMrLz0OwV_1PZEZyZlzlZMgZOx1FYqq8nhcq3UTBuobopO5EnKIu7U47XsfeJJcJSEs0DN_2_Ydb8uJr3xL-oEjv2UNgB4yay3TpOns1rO8-ouSh7xg3mJoTiCJUkdUwwuUAJMoT9YhTjJNvjd6cqBIrOojgvpLLIS-OtHHIsPjAENxfV-5Jwg_1kzoVByQ"
               style={{
-                height:     "72px",
-                width:      "auto",
-                objectFit:  "contain",
-                filter:     "drop-shadow(0 6px 20px rgba(216,30,54,0.25))",
+                height: "72px",
+                width: "auto",
+                objectFit: "contain",
+                filter: "drop-shadow(0 6px 20px rgba(216,30,54,0.25))",
               }}
             />
           </div>
@@ -188,13 +188,13 @@ export default function LoginPage() {
           <div style={{ textAlign: "center", marginBottom: "40px" }}>
             <h1
               style={{
-                fontFamily:    "'Sora', sans-serif",
-                fontSize:      "clamp(26px, 5vw, 32px)",
-                fontWeight:    600,
-                lineHeight:    "40px",
-                color:         t.onSurface,
+                fontFamily: "'Sora', sans-serif",
+                fontSize: "clamp(26px, 5vw, 32px)",
+                fontWeight: 600,
+                lineHeight: "40px",
+                color: t.onSurface,
                 letterSpacing: "-0.01em",
-                margin:        "0 0 10px",
+                margin: "0 0 10px",
               }}
             >
               Welcome back to
@@ -204,10 +204,10 @@ export default function LoginPage() {
             <p
               style={{
                 fontFamily: "'Hanken Grotesk', sans-serif",
-                fontSize:   "16px",
+                fontSize: "16px",
                 lineHeight: "24px",
-                color:      t.secondary,
-                margin:     0,
+                color: t.secondary,
+                margin: 0,
               }}
             >
               Login to access your creative workspace.
@@ -217,12 +217,12 @@ export default function LoginPage() {
           {/* ── Login Card ──────────────────────────────────────────── */}
           <div
             style={{
-              width:        "100%",
-              background:   t.surfaceContainer,
+              width: "100%",
+              background: t.surfaceContainer,
               borderRadius: "16px",
-              padding:      "clamp(24px, 5vw, 40px)",
-              boxSizing:    "border-box",
-              boxShadow:    "0 0 0 1px rgba(255,255,255,0.06), 0 16px 48px -8px rgba(0,0,0,0.5), 0 4px 20px rgba(216,30,54,0.08)",
+              padding: "clamp(24px, 5vw, 40px)",
+              boxSizing: "border-box",
+              boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 16px 48px -8px rgba(0,0,0,0.5), 0 4px 20px rgba(216,30,54,0.08)",
             }}
           >
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -232,13 +232,13 @@ export default function LoginPage() {
                 <label
                   htmlFor="email"
                   style={{
-                    fontFamily:    "'Geist', sans-serif",
-                    fontSize:      "12px",
-                    fontWeight:    600,
-                    lineHeight:    "16px",
+                    fontFamily: "'Geist', sans-serif",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    lineHeight: "16px",
                     letterSpacing: "0.01em",
                     textTransform: "uppercase",
-                    color:         t.secondary,
+                    color: t.secondary,
                   }}
                 >
                   Email Address
@@ -265,13 +265,13 @@ export default function LoginPage() {
                   <label
                     htmlFor="password"
                     style={{
-                      fontFamily:    "'Geist', sans-serif",
-                      fontSize:      "12px",
-                      fontWeight:    600,
-                      lineHeight:    "16px",
+                      fontFamily: "'Geist', sans-serif",
+                      fontSize: "12px",
+                      fontWeight: 600,
+                      lineHeight: "16px",
                       letterSpacing: "0.01em",
                       textTransform: "uppercase",
-                      color:         t.secondary,
+                      color: t.secondary,
                     }}
                   >
                     Password
@@ -279,11 +279,11 @@ export default function LoginPage() {
                   <a
                     href="#"
                     style={{
-                      fontFamily:    "'Geist', sans-serif",
-                      fontSize:      "13px",
-                      fontWeight:    600,
-                      color:         t.primaryContainer,
-                      textDecoration:"none",
+                      fontFamily: "'Geist', sans-serif",
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      color: t.primaryContainer,
+                      textDecoration: "none",
                       letterSpacing: "0.02em",
                     }}
                   >
@@ -308,12 +308,12 @@ export default function LoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     style={{
                       background: "none",
-                      border:     "none",
-                      cursor:     "pointer",
-                      padding:    "4px",
-                      display:    "flex",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: "4px",
+                      display: "flex",
                       alignItems: "center",
-                      color:      t.outline,
+                      color: t.outline,
                       flexShrink: 0,
                     }}
                   >
@@ -328,30 +328,30 @@ export default function LoginPage() {
               <button
                 type="submit"
                 style={{
-                  width:         "100%",
-                  padding:       "16px",
-                  marginTop:     "4px",
-                  background:    t.primaryContainer,
-                  color:         t.onPrimary,
-                  border:        "none",
-                  borderRadius:  "8px",
-                  fontFamily:    "'Geist', sans-serif",
-                  fontSize:      "14px",
-                  fontWeight:    500,
-                  lineHeight:    "20px",
+                  width: "100%",
+                  padding: "16px",
+                  marginTop: "4px",
+                  background: t.primaryContainer,
+                  color: t.onPrimary,
+                  border: "none",
+                  borderRadius: "8px",
+                  fontFamily: "'Geist', sans-serif",
+                  fontSize: "14px",
+                  fontWeight: 500,
+                  lineHeight: "20px",
                   letterSpacing: "0.01em",
                   textTransform: "uppercase",
-                  cursor:        "pointer",
-                  boxShadow:     "0 4px 20px rgba(216,30,54,0.25)",
-                  transition:    "all 0.2s ease",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 20px rgba(216,30,54,0.25)",
+                  transition: "all 0.2s ease",
                 }}
                 onMouseEnter={(e) => {
                   (e.target as HTMLButtonElement).style.filter = "brightness(1.15)";
-                  (e.target as HTMLButtonElement).style.transform  = "translateY(-1px)";
+                  (e.target as HTMLButtonElement).style.transform = "translateY(-1px)";
                 }}
                 onMouseLeave={(e) => {
                   (e.target as HTMLButtonElement).style.filter = "none";
-                  (e.target as HTMLButtonElement).style.transform  = "translateY(0)";
+                  (e.target as HTMLButtonElement).style.transform = "translateY(0)";
                 }}
               >
                 Sign In
@@ -361,24 +361,24 @@ export default function LoginPage() {
             {/* Divider */}
             <div
               style={{
-                position:   "relative",
-                margin:     "28px 0",
-                textAlign:  "center",
-                display:    "flex",
+                position: "relative",
+                margin: "28px 0",
+                textAlign: "center",
+                display: "flex",
                 alignItems: "center",
-                gap:        "16px",
+                gap: "16px",
               }}
             >
               <div style={{ flex: 1, height: "1px", background: t.outlineVariant }} />
               <span
                 style={{
-                  fontFamily:    "'Geist', sans-serif",
-                  fontSize:      "11px",
-                  fontWeight:    500,
+                  fontFamily: "'Geist', sans-serif",
+                  fontSize: "11px",
+                  fontWeight: 500,
                   letterSpacing: "0.15em",
                   textTransform: "uppercase",
-                  color:         t.outline,
-                  whiteSpace:    "nowrap",
+                  color: t.outline,
+                  whiteSpace: "nowrap",
                 }}
               >
                 Or continue with
@@ -391,31 +391,31 @@ export default function LoginPage() {
               type="button"
               onClick={handleGoogleLogin}
               style={{
-                width:         "100%",
-                display:       "flex",
-                alignItems:    "center",
-                justifyContent:"center",
-                gap:           "12px",
-                padding:       "14px",
-                background:    t.surfaceLow,
-                border:        `1.5px solid ${t.outlineVariant}`,
-                borderRadius:  "8px",
-                fontFamily:    "'Geist', sans-serif",
-                fontSize:      "14px",
-                fontWeight:    500,
-                lineHeight:    "20px",
-                color:         t.onSurface,
-                cursor:        "pointer",
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "12px",
+                padding: "14px",
+                background: t.surfaceLow,
+                border: `1.5px solid ${t.outlineVariant}`,
+                borderRadius: "8px",
+                fontFamily: "'Geist', sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                lineHeight: "20px",
+                color: t.onSurface,
+                cursor: "pointer",
                 letterSpacing: "0.01em",
-                transition:    "all 0.2s ease",
+                transition: "all 0.2s ease",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background   = t.surfaceHigh;
-                (e.currentTarget as HTMLButtonElement).style.borderColor  = t.outline;
+                (e.currentTarget as HTMLButtonElement).style.background = t.surfaceHigh;
+                (e.currentTarget as HTMLButtonElement).style.borderColor = t.outline;
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background   = t.surfaceLow;
-                (e.currentTarget as HTMLButtonElement).style.borderColor  = t.outlineVariant;
+                (e.currentTarget as HTMLButtonElement).style.background = t.surfaceLow;
+                (e.currentTarget as HTMLButtonElement).style.borderColor = t.outlineVariant;
               }}
             >
               <svg fill="none" height="20" viewBox="0 0 24 24" width="20">
@@ -431,11 +431,11 @@ export default function LoginPage() {
           {/* Footer note */}
           <p
             style={{
-              marginTop:  "32px",
+              marginTop: "32px",
               fontFamily: "'Hanken Grotesk', sans-serif",
-              fontSize:   "13px",
-              color:      t.outline,
-              textAlign:  "center",
+              fontSize: "13px",
+              color: t.outline,
+              textAlign: "center",
             }}
           >
             © {new Date().getFullYear()} Skittex Studio. All rights reserved.
@@ -446,42 +446,42 @@ export default function LoginPage() {
         {isSubmitting && (
           <div
             style={{
-              position:       "fixed",
-              inset:          0,
-              background:     "rgba(18,19,23,0.94)",
+              position: "fixed",
+              inset: 0,
+              background: "rgba(18,19,23,0.94)",
               backdropFilter: "blur(16px)",
-              zIndex:         9999,
-              display:        "flex",
-              alignItems:     "center",
+              zIndex: 9999,
+              display: "flex",
+              alignItems: "center",
               justifyContent: "center",
-              animation:      "fadeIn 0.3s ease",
+              animation: "fadeIn 0.3s ease",
             }}
           >
             <div
               style={{
-                textAlign:    "center",
-                padding:      "48px",
-                background:   t.surfaceContainer,
+                textAlign: "center",
+                padding: "48px",
+                background: t.surfaceContainer,
                 borderRadius: "9999px",
-                boxShadow:    "0 0 0 1px rgba(255,255,255,0.06), 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(216,30,54,0.12)",
-                width:        "300px",
-                height:       "300px",
-                display:      "flex",
-                flexDirection:"column",
-                alignItems:   "center",
-                justifyContent:"center",
-                gap:          "8px",
+                boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(216,30,54,0.12)",
+                width: "300px",
+                height: "300px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
               }}
             >
               <span
                 style={{
-                  fontFamily:            "'Material Symbols Outlined'",
+                  fontFamily: "'Material Symbols Outlined'",
                   fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48",
-                  fontSize:              "72px",
-                  color:                 t.primaryContainer,
-                  display:               "block",
-                  lineHeight:            1,
-                  marginBottom:          "8px",
+                  fontSize: "72px",
+                  color: t.primaryContainer,
+                  display: "block",
+                  lineHeight: 1,
+                  marginBottom: "8px",
                 }}
               >
                 check_circle
@@ -489,10 +489,10 @@ export default function LoginPage() {
               <h2
                 style={{
                   fontFamily: "'Sora', sans-serif",
-                  fontSize:   "24px",
+                  fontSize: "24px",
                   fontWeight: 600,
-                  color:      t.onSurface,
-                  margin:     0,
+                  color: t.onSurface,
+                  margin: 0,
                 }}
               >
                 Authenticated
@@ -500,9 +500,9 @@ export default function LoginPage() {
               <p
                 style={{
                   fontFamily: "'Hanken Grotesk', sans-serif",
-                  fontSize:   "14px",
-                  color:      t.secondary,
-                  margin:     0,
+                  fontSize: "14px",
+                  color: t.secondary,
+                  margin: 0,
                 }}
               >
                 Entering studio space...
@@ -511,7 +511,8 @@ export default function LoginPage() {
           </div>
         )}
 
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
           input::placeholder { color: #5c3f3f !important; opacity: 0.6; }
           input::-webkit-input-placeholder { color: #5c3f3f !important; opacity: 0.6; }
