@@ -33,6 +33,21 @@ export default function LoginPage() {
   const [emailFocused, setEmailFocused] = useState(false);
   const [passFocused, setPassFocused] = useState(false);
 
+  React.useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        if (session.user.email?.toLowerCase() === "indrajithgamedevelouper2021@gmail.com") {
+          router.push("/");
+        } else {
+          await supabase.auth.signOut();
+          alert("Unauthorized access");
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
