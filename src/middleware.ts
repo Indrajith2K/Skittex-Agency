@@ -2,22 +2,24 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-    const protectedRoutes = ["/"];
-
-    const hasSupabaseCookie = request.cookies
+    const hasSession = request.cookies
         .getAll()
-        .some((cookie) => cookie.name.includes("auth-token"));
+        .some((cookie) =>
+            cookie.name.includes("sb-")
+        );
 
     if (
-        protectedRoutes.includes(request.nextUrl.pathname) &&
-        !hasSupabaseCookie
+        request.nextUrl.pathname === "/" &&
+        !hasSession
     ) {
-        return NextResponse.redirect(new URL("/login", request.url));
+        return NextResponse.redirect(
+            new URL("/login", request.url)
+        );
     }
 
     return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/((?!_next|favicon.ico).*)"],
+    matcher: ["/"],
 };
