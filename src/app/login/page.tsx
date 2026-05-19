@@ -49,6 +49,17 @@ export default function LoginPage() {
       return;
     }
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user?.email !== "indrajithgamedevelouper2021@gmail.com") {
+      await supabase.auth.signOut();
+      alert("Unauthorized access");
+      setIsSubmitting(false);
+      return;
+    }
+
     router.push("/");
   };
 
